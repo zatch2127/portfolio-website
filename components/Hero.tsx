@@ -1,35 +1,39 @@
-"use client"
+"use client";
 
-import { motion, useScroll, useTransform } from "framer-motion"
-import { useRef, useEffect, useState } from "react"
-import { ChevronDown } from "lucide-react"
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useEffect, useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 export default function Hero() {
-  const ref = useRef<HTMLDivElement>(null)
+  const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
-  })
+  });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"])
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0])
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
 
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 })
+  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
       setMousePosition({
         x: (e.clientX / window.innerWidth) * 100,
         y: (e.clientY / window.innerHeight) * 100,
-      })
-    }
+      });
+    };
 
-    window.addEventListener("mousemove", handleMouseMove)
-    return () => window.removeEventListener("mousemove", handleMouseMove)
-  }, [])
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
 
   return (
-    <section id="home" ref={ref} className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section
+      id="home"
+      ref={ref}
+      className="relative h-screen flex items-center justify-center overflow-hidden"
+    >
       {/* Animated background */}
       <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-blue-950/20 to-purple-950/20" />
 
@@ -67,25 +71,32 @@ export default function Hero() {
         <div
           className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-blue-500/10 to-purple-600/10 rounded-full blur-3xl"
           style={{
-            transform: `translate(${mousePosition.x * 0.1}px, ${mousePosition.y * 0.1}px)`,
+            transform: `translate(${mousePosition.x * 0.1}px, ${
+              mousePosition.y * 0.1
+            }px)`,
           }}
         />
         <div
           className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 rounded-full blur-3xl"
           style={{
-            transform: `translate(${-mousePosition.x * 0.05}px, ${-mousePosition.y * 0.05}px)`,
+            transform: `translate(${-mousePosition.x * 0.05}px, ${
+              -mousePosition.y * 0.05
+            }px)`,
           }}
         />
       </motion.div>
 
-      <motion.div className="relative z-10 text-center max-w-4xl mx-auto px-4" style={{ y, opacity }}>
+      <motion.div
+        className="relative z-10 text-center max-w-4xl mx-auto px-4"
+        style={{ y, opacity }}
+      >
         <motion.h1
           className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.2 }}
         >
-          Alex Johnson
+          Mohammad Zaid
         </motion.h1>
 
         <motion.p
@@ -94,7 +105,9 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
         >
-          Full Stack Developer & Creative Technologist
+          Aspiring Technologist | Open to All Opportunities in Tech
+          {/* Full Stack Developer & Creative Technologist */}
+
         </motion.p>
 
         <motion.p
@@ -103,8 +116,12 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.6 }}
         >
-          Crafting exceptional digital experiences with cutting-edge technologies. Passionate about creating innovative
-          solutions that push the boundaries of web development.
+          {/* Crafting exceptional digital experiences with cutting-edge
+          technologies. Passionate about creating innovative solutions that push
+          the boundaries of web development. */}
+          I'm a tech enthusiast with a strong learning mindset, ready to explore
+          and contribute across different areas of software, web development,
+          and emerging technologies.
         </motion.p>
 
         <motion.div
@@ -143,5 +160,5 @@ export default function Hero() {
         <ChevronDown className="w-8 h-8 text-slate-400" />
       </motion.div>
     </section>
-  )
+  );
 }

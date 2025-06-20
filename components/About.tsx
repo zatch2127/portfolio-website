@@ -1,12 +1,14 @@
-"use client"
+"use client";
 
-import { motion, useInView } from "framer-motion"
-import { useRef } from "react"
-import Image from "next/image"
+import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import Image from "next/image";
+
+import zatch from "./images/zatch.png";
 
 export default function About() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-100px" });
 
   return (
     <section id="about" className="py-20 bg-slate-900/50" ref={ref}>
@@ -27,19 +29,23 @@ export default function About() {
             </h2>
             <div className="space-y-6 text-slate-300 text-lg leading-relaxed">
               <p>
-                I'm a passionate full-stack developer with over 10 years of experience crafting digital experiences that
-                seamlessly blend functionality with aesthetic appeal. My journey in web development has been driven by
-                an insatiable curiosity for emerging technologies and a commitment to delivering exceptional user
-                experiences.
+                I'm an aspiring full-stack developer with a strong foundation in
+                web technologies and a deep passion for building digital
+                experiences that are both functional and visually engaging. My
+                journey into development began with personal projects and a
+                curiosity for how technology shapes the world.
               </p>
               <p>
-                Specializing in modern JavaScript frameworks, cloud architecture, and user-centered design, I've had the
-                privilege of working with startups and Fortune 500 companies alike, helping them transform their digital
-                presence and achieve their business objectives.
+                I'm particularly interested in modern JavaScript frameworks,
+                cloud platforms, and creating user-focused solutions. While I
+                may be at the start of my professional journey, I’ve already
+                built several projects, collaborated on open-source, and am
+                eager to contribute to impactful development teams.
               </p>
               <p>
-                When I'm not coding, you'll find me exploring the latest in AI and machine learning, contributing to
-                open-source projects, or mentoring the next generation of developers.
+                Outside of coding, I enjoy learning about AI, contributing to
+                online tech communities, and constantly seeking ways to improve
+                my skills and help others grow alongside me.
               </p>
             </div>
 
@@ -49,16 +55,19 @@ export default function About() {
               animate={isInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              {["10+ Years Experience", "Full Stack Expert", "AI Enthusiast", "Open Source Contributor"].map(
-                (item, index) => (
-                  <span
-                    key={item}
-                    className="px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-full text-sm text-slate-300 backdrop-blur-sm"
-                  >
-                    {item}
-                  </span>
-                ),
-              )}
+              {[
+                "Passionate Learner",
+                "Aspiring Full Stack Developer",
+                "Quick Adopter of New Tech",
+                "Open to Opportunities",
+              ].map((item, index) => (
+                <span
+                  key={item}
+                  className="px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-full text-sm text-slate-300 backdrop-blur-sm"
+                >
+                  {item}
+                </span>
+              ))}
             </motion.div>
           </motion.div>
 
@@ -70,7 +79,14 @@ export default function About() {
           >
             <div className="relative w-full h-96 rounded-2xl overflow-hidden">
               <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/20 backdrop-blur-sm" />
-              <Image src="/placeholder.svg?height=400&width=400" alt="Alex Johnson" fill className="object-cover" />
+
+              <Image
+                src={zatch}
+                alt="Mohammad Zaid"
+                width={400}
+                height={400}
+                className="object-cover"
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
             </div>
 
@@ -91,5 +107,5 @@ export default function About() {
         </motion.div>
       </div>
     </section>
-  )
+  );
 }
