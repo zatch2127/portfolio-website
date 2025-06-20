@@ -46,7 +46,7 @@ export default function Projects() {
         "A secure and user-friendly electronic voting platform built . Enables voter authentication, vote casting, and real-time result tracking with admin controls.",
 
       image: "/placeholder.svg?height=300&width=500",
-      tech: ["Python", "Html", "Css", "Js",'sqlLite'],
+      tech: ["Python", "Html", "Css", "Js", "sqlLite"],
       github: "#",
       live: "#",
       featured: false,
