@@ -13,15 +13,16 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Mohammad Zaid - Full Stack Developer",
+  title: "Mohammad Zaid – Aspiring Software & Web Developer",
   description:
-    "Experienced full-stack developer specializing in modern web technologies. View my portfolio of innovative projects and get in touch.",
-  keywords: "full stack developer, react, next.js, portfolio, web development",
+    "Aspiring software and web developer with hands-on experience in Python, Django, Tailwind CSS, and Bootstrap. Also familiar with core programming languages like C, C++, and Java. Explore my portfolio and projects.",
+  keywords:
+    "python developer, django, web development, tailwind css, bootstrap, software developer, fresher portfolio, c, c++, java, backend developer",
   authors: [{ name: "Mohammad Zaid" }],
   openGraph: {
-    title: "Mohammad Zaid - Full Stack Developer",
+    title: "Mohammad Zaid – Aspiring Software & Web Developer",
     description:
-      "Experienced full-stack developer specializing in modern web technologies.",
+      "Fresher developer skilled in Python, Django, Tailwind CSS, and Bootstrap. Check out my portfolio of beginner-friendly projects and learn more about my journey.",
     type: "website",
   },
   generator: "v0.dev",
