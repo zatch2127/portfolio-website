@@ -8,14 +8,14 @@ export default function Skills() {
   const isInView = useInView(ref, { once: true, margin: "-100px" })
 
   const skills = [
-    { name: "React/Next.js", level: 95, color: "from-blue-500 to-cyan-500" },
-    { name: "TypeScript", level: 90, color: "from-blue-600 to-blue-400" },
-    { name: "Node.js", level: 88, color: "from-green-500 to-emerald-500" },
-    { name: "Python", level: 85, color: "from-yellow-500 to-orange-500" },
-    { name: "AWS/Cloud", level: 82, color: "from-orange-500 to-red-500" },
+    { name: "Python", level: 95, color: "from-yellow-500 to-orange-500" },
+    { name: "JavaScript", level: 80, color: "from-blue-600 to-blue-400" },
+    { name: "MySQL", level: 88, color: "from-green-500 to-emerald-500" },
+    { name: "React/Next.js", level: 75, color: "from-blue-500 to-cyan-500" },
+    { name: "TailwindCss", level: 82, color: "from-orange-500 to-red-500" },
     { name: "GraphQL", level: 80, color: "from-pink-500 to-purple-500" },
     { name: "Docker", level: 78, color: "from-blue-400 to-blue-600" },
-    { name: "MongoDB", level: 85, color: "from-green-600 to-green-400" },
+    { name: "MongoDB", level: 45, color: "from-green-600 to-green-400" },
   ]
 
   return (
@@ -81,7 +81,7 @@ export default function Skills() {
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.8, delay: 0.8 }}
         >
-          {["React", "Next.js", "TypeScript", "Node.js", "Python", "AWS"].map((tech, index) => (
+          {["React", "MySQL", "JavaScript", "Node.js", "Python", "AWS"].map((tech, index) => (
             <motion.div
               key={tech}
               className="flex flex-col items-center p-4 bg-slate-900/50 rounded-xl border border-slate-800 hover:border-blue-500/50 transition-all duration-300 backdrop-blur-sm group"
