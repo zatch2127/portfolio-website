@@ -11,6 +11,15 @@ export default function Projects() {
   const [hoveredProject, setHoveredProject] = useState<number | null>(null);
 
   const projects = [
+{
+  title: "Dawn of the Werewolf",
+  description:
+    "A real-time multiplayer Werewolf game where players are assigned secret roles like villagers, werewolves, and leaders. The game alternates between day and night phases — during the day, players discuss and vote, while at night, werewolves secretly coordinate through private chat. Built with seamless real-time communication, dynamic role assignments, and smooth UI transitions.",
+  tech: ["React", "Node.js", "Socket.io", "Express", "MongoDB"],
+  github: "#",
+  live: "https://nightmarewolf.netlify.app/",
+  featured: true,
+},
     {
       title: "E-Commerce Platform",
       description:
