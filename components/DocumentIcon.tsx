@@ -28,7 +28,7 @@ export const DocumentIcon = ({
     try {
       const link = document.createElement("a");
       link.href = fileUrl;
-      link.download = "ZaidCV.pdf";
+      link.download = "Resume.pdf";
       link.target = "_blank";
       document.body.appendChild(link);
       link.click();
