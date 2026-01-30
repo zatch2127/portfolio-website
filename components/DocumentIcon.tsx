@@ -8,7 +8,7 @@ interface Props {
 
 export const DocumentIcon = ({
   position = "right",
-  fileUrl = "/docs/Resume.pdf",
+  fileUrl = "/docs/Mohammad_Zaid.pdf",
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isFullscreen, setIsFullscreen] = useState(false);
