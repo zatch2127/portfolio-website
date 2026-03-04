@@ -4,6 +4,8 @@ import { motion, useInView } from "framer-motion";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { ExternalLink, Github } from "lucide-react";
+import logoImage from "./images/logo.png";
+import syntaraImage from "./images/syntara.png";
 
 export default function Projects() {
   const ref = useRef(null);
@@ -19,6 +21,7 @@ export default function Projects() {
   github: "#",
   live: "https://nightmarewolf.netlify.app/",
   featured: true,
+  image: logoImage
 },
     {
       title: "E-Commerce Platform",
@@ -28,6 +31,7 @@ export default function Projects() {
       github: "#",
       live: "https://www.syntarahealthcare.com",
       featured: true,
+      image: syntaraImage
     },
     // {
     //   title: "AI-Powered Analytics Dashboard",
@@ -49,17 +53,17 @@ export default function Projects() {
     //   live: "#",
     //   featured: false,
     // },
-    {
-      title: "E- Voting System",
-      description:
-        "A secure and user-friendly electronic voting platform built . Enables voter authentication, vote casting, and real-time result tracking with admin controls.",
+    // {
+    //   title: "E- Voting System",
+    //   description:
+    //     "A secure and user-friendly electronic voting platform built . Enables voter authentication, vote casting, and real-time result tracking with admin controls.",
 
-      image: "/placeholder.svg?height=300&width=500",
-      tech: ["Python", "Html", "Css", "Js", "sqlLite"],
-      github: "#",
-      live: "#",
-      featured: false,
-    },
+    //   image: "/placeholder.svg?height=300&width=500",
+    //   tech: ["Python", "Html", "Css", "Js", "sqlLite"],
+    //   github: "#",
+    //   live: "#",
+    //   featured: false,
+    // },
   ];
 
   return (
@@ -100,13 +104,15 @@ export default function Projects() {
                 } gap-0`}
               >
                 <div className="relative overflow-hidden">
-                  <Image
-                    src={project.image || "/placeholder.svg"}
-                    alt={project.title}
-                    width={500}
-                    height={300}
-                    className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
+                 <div className="relative overflow-hidden h-64 flex items-center justify-center bg-gray-100">
+  <Image
+    src={project.image || "/placeholder.svg"}
+    alt={project.title}
+    width={500}
+    height={300}
+    className="max-h-full w-auto object-contain transition-transform duration-500 group-hover:scale-110"
+  />
+</div>
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
 
                   {/* Floating action buttons */}

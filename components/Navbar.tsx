@@ -68,7 +68,7 @@ export default function Navbar() {
           </div>
         </div>
       </motion.nav>
-      <DocumentIcon position="right" fileUrl="/docs/zaidcv.pdf" />
+      <DocumentIcon position="right" fileUrl="/docs/Mohammad_Zaid.pdf" />
     </>
   );
 }

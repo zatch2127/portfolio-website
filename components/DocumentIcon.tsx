@@ -14,6 +14,7 @@ export const DocumentIcon = ({
   const [isFullscreen, setIsFullscreen] = useState(false);
 
   const cornerStyle = position === "left" ? "left-4" : "right-4";
+  const resolvedFileUrl = `${fileUrl}${fileUrl.includes("?") ? "&" : "?"}v=20260304`;
 
   const handleIconClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
@@ -22,12 +23,12 @@ export const DocumentIcon = ({
 
   const handleDownload = () => {
     // For local files, we'll try to open in new tab first
-    window.open(fileUrl, "_blank");
+    window.open(resolvedFileUrl, "_blank");
 
     // Alternative download method
     try {
       const link = document.createElement("a");
-      link.href = fileUrl;
+      link.href = resolvedFileUrl;
       link.download = "Resume.pdf";
       link.target = "_blank";
       document.body.appendChild(link);
@@ -145,7 +146,7 @@ export const DocumentIcon = ({
             {/* PDF Viewer */}
             <div className="flex-1 overflow-hidden bg-gray-100">
               <iframe
-                src={fileUrl}
+                src={resolvedFileUrl}
                 title="CV Preview"
                 className="w-full h-full"
               />
