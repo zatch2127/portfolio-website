@@ -105,7 +105,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1, delay: 0.4 }}
         >
-          Aspiring Technologist | Open to All Opportunities in Tech
+    Full Stack Developer | Python, React, AI / LLM Projects
           {/* Full Stack Developer & Creative Technologist */}
 
         </motion.p>
@@ -119,9 +119,7 @@ export default function Hero() {
           {/* Crafting exceptional digital experiences with cutting-edge
           technologies. Passionate about creating innovative solutions that push
           the boundaries of web development. */}
-          I'm a tech enthusiast with a strong learning mindset, ready to explore
-          and contribute across different areas of software, web development,
-          and emerging technologies.
+          I create full-stack applications and AI-powered tools, from responsive web apps to real-time systems. Skilled in Python, React, and modern web technologies, with a passion for building practical, production-ready solutions.
         </motion.p>
 
         <motion.div

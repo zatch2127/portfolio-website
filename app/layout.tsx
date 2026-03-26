@@ -5,6 +5,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import MouseFollower from "@/components/MouseFollower";
 import ScrollProgress from "@/components/ScrollProgress";
+import Footer from "@/components/footer/Footer";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const playfair = Playfair_Display({
@@ -42,6 +43,7 @@ export default function RootLayout({
         <MouseFollower />
         <Navbar />
         {children}
+        <Footer />
       </body>
     </html>
   );

@@ -3,8 +3,17 @@
 import type React from "react";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
+import {
+  CheckCircle,
+  Github,
+  Globe,
+  Linkedin,
+  Mail,
+  MapPin,
+  Phone,
+  Send,
+} from "lucide-react";
 
 export default function Contact() {
   const ref = useRef(null);
@@ -17,22 +26,63 @@ export default function Contact() {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  const isFormValid = useMemo(() => {
+    return (
+      formData.name.trim().length >= 2 &&
+      /\S+@\S+\.\S+/.test(formData.email) &&
+      formData.subject.trim().length >= 3 &&
+      formData.message.trim().length >= 10
+    );
+  }, [formData]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitError("");
+
+    if (!isFormValid) {
+      setSubmitError("Please complete all fields correctly before sending.");
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          subject: formData.subject.trim(),
+          message: formData.message.trim(),
+        }),
+      });
 
-    setIsSubmitting(false);
-    setIsSubmitted(true);
+      const result = await response.json();
 
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
+      if (!response.ok) {
+        throw new Error(result.error || "Unable to send message.");
+      }
+
+      setIsSubmitted(true);
       setFormData({ name: "", email: "", subject: "", message: "" });
-    }, 3000);
+
+      setTimeout(() => {
+        setIsSubmitted(false);
+      }, 3000);
+    } catch (error) {
+      setSubmitError(
+        error instanceof Error
+          ? error.message
+          : "Unable to send message right now."
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -49,54 +99,74 @@ export default function Contact() {
       icon: Mail,
       label: "Email",
       value: "zatch360aa@gmail.com",
-      href: "mailto:zatch360aa@gmail.com",
+      href: "https://mail.google.com/mail/?view=cm&fs=1&to=zatch360aa@gmail.com",
     },
     {
       icon: Phone,
       label: "Phone",
       value: "+91 9867581710",
-      href: "tel:+15551234567",
+      href: "tel:+919867581710",
     },
     {
       icon: MapPin,
       label: "Location",
       value: "Maharashtra, INDIA",
-      href: "#",
+      href: "https://www.google.com/maps/search/?api=1&query=Maharashtra%2C+India",
+    },
+  ];
+
+  const socialLinks = [
+    {
+      icon: Linkedin,
+      label: "LinkedIn",
+      value: "mohammad-zaid-ansari-757048342",
+      href: "https://www.linkedin.com/in/mohammad-zaid-ansari-757048342/",
+    },
+    {
+      icon: Github,
+      label: "GitHub",
+      value: "zatch2127",
+      href: "https://github.com/zatch2127/",
+    },
+    {
+      icon: Globe,
+      label: "Portfolio",
+      value: "zaid360cv.netlify.app",
+      href: "https://zaid360cv.netlify.app/",
     },
   ];
 
   return (
     <section
       id="contact"
-      className="py-20 bg-slate-950 relative overflow-hidden"
+      className="relative overflow-hidden bg-slate-950 py-20"
       ref={ref}
     >
-      {/* Background decoration */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-gradient-to-r from-blue-500/5 to-purple-600/5 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-cyan-500/5 to-blue-600/5 rounded-full blur-3xl" />
+        <div className="absolute left-1/4 top-1/4 h-96 w-96 rounded-full bg-gradient-to-r from-blue-500/5 to-purple-600/5 blur-3xl" />
+        <div className="absolute bottom-1/4 right-1/4 h-96 w-96 rounded-full bg-gradient-to-r from-cyan-500/5 to-blue-600/5 blur-3xl" />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          className="text-center mb-16"
+          className="mb-16 text-center"
           initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-            Let's Build Something Great
+          <h2 className="mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
+            Let&apos;s Build Something Great
           </h2>
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-            I'm excited to collaborate on real-world projects, learn from new
-            experiences, and contribute my skills wherever I can. If you have an
-            idea or an opportunity, let’s connect and explore how we can grow
-            and build something amazing together.
-          </p>
+          {/* <p className="mx-auto max-w-3xl text-xl text-slate-400">
+            I&apos;m always eager to collaborate on real-world projects, learn
+            from new experiences, and contribute my skills. Whether it&apos;s a
+            small project, a learning opportunity, or a full-scale
+            collaboration, let&apos;s connect and build something amazing
+            together.
+          </p> */}
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Contact Information */}
+        <div className="grid gap-12 lg:grid-cols-2">
           <motion.div
             className="space-y-8"
             initial={{ opacity: 0, x: -50 }}
@@ -104,55 +174,132 @@ export default function Contact() {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <div>
-              <h3 className="text-2xl font-bold text-white mb-6">
+              <h3 className="mb-6 text-2xl font-bold text-white">
                 Get In Touch
               </h3>
-              <p className="text-slate-300 text-lg leading-relaxed mb-8">
-                I'm always excited to connect with others in the tech community,
-                collaborate on new ideas, or take on real-world projects that
-                help me grow as a developer. Whether it's a small project or a
-                learning opportunity, I'd love to hear from you!
+              <p className="mb-8 text-lg leading-relaxed text-slate-300">
+                I&apos;m always eager to collaborate on real-world projects,
+                learn from new experiences, and contribute my skills. Whether
+                it&apos;s a small project, a learning opportunity, or a
+                full-scale collaboration, let&apos;s connect and build something
+                amazing together.
               </p>
             </div>
 
-            <div className="space-y-6">
+            <div className="grid gap-4 sm:grid-cols-3">
               {contactInfo.map((item, index) => (
                 <motion.a
                   key={item.label}
                   href={item.href}
-                  className="flex items-center gap-4 p-4 bg-slate-800/50 rounded-xl border border-slate-700 hover:border-blue-500/50 transition-all duration-300 backdrop-blur-sm group"
+                  target={item.href.startsWith("http") ? "_blank" : undefined}
+                  rel={item.href.startsWith("http") ? "noreferrer" : undefined}
+                  className="group flex min-h-[120px] flex-col justify-between rounded-xl border border-slate-700 bg-slate-800/50 p-4 backdrop-blur-sm transition-all duration-300 hover:border-blue-500/50"
                   data-interactive
                   initial={{ opacity: 0, y: 20 }}
                   animate={
                     isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }
                   }
                   transition={{ duration: 0.8, delay: 0.4 + index * 0.1 }}
-                  whileHover={{ x: 5 }}
+                  whileHover={{ y: -4 }}
                 >
-                  <div className="p-3 bg-gradient-to-r from-blue-500/20 to-purple-600/20 rounded-lg group-hover:from-blue-500/30 group-hover:to-purple-600/30 transition-all duration-300">
-                    <item.icon className="w-5 h-5 text-blue-400" />
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="rounded-lg bg-gradient-to-r from-blue-500/20 to-purple-600/20 p-3 transition-all duration-300 group-hover:from-blue-500/30 group-hover:to-purple-600/30">
+                      <item.icon className="h-5 w-5 text-blue-400" />
+                    </div>
+                    <span className="text-[10px] uppercase tracking-[0.24em] text-slate-500">
+                      {item.label}
+                    </span>
                   </div>
                   <div>
-                    <p className="text-sm text-slate-400">{item.label}</p>
-                    <p className="text-white font-medium">{item.value}</p>
+                    <p className="text-sm font-medium leading-6 text-white">
+                      {item.value}
+                    </p>
                   </div>
                 </motion.a>
               ))}
             </div>
+
+            <div className="rounded-2xl border border-slate-800 bg-slate-900/50 p-5 backdrop-blur-sm">
+              <p className="text-sm uppercase tracking-[0.28em] text-slate-500">
+                Connect With Me
+              </p>
+              <div className="mt-5 grid gap-3">
+                {socialLinks.map((item, index) => (
+                  <motion.a
+                    key={item.label}
+                    href={item.href}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center justify-between gap-4 rounded-xl border border-slate-800 bg-slate-950/60 px-4 py-3 text-slate-300 transition-all duration-300 hover:border-blue-500/40 hover:text-white"
+                    data-interactive
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={
+                      isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 18 }
+                    }
+                    transition={{ duration: 0.7, delay: 0.55 + index * 0.08 }}
+                    whileHover={{ x: 4 }}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="rounded-lg bg-slate-800/80 p-2">
+                        <item.icon className="h-4 w-4" />
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium text-white">
+                          {item.label}
+                        </p>
+                        <p className="text-xs text-slate-400">{item.value}</p>
+                      </div>
+                    </div>
+                    <Globe className="h-4 w-4 text-slate-500" />
+                  </motion.a>
+                ))}
+              </div>
+            </div>
           </motion.div>
 
-          {/* Contact Form */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
-              <div className="grid sm:grid-cols-2 gap-6">
+            <form
+              onSubmit={handleSubmit}
+              className="space-y-6 rounded-[28px] border border-slate-800 bg-slate-900/55 p-6 shadow-[0_24px_80px_rgba(2,8,23,0.35)] backdrop-blur-sm"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <p className="text-sm uppercase tracking-[0.28em] text-slate-500">
+                    Contact Form
+                  </p>
+                  <h3 className="mt-2 text-2xl font-bold text-white">
+                    Send a project message
+                  </h3>
+                </div>
+                <motion.div
+                  animate={
+                    isSubmitting
+                      ? { rotate: [0, -8, 8, -4, 4, 0] }
+                      : { rotate: 0, scale: isSubmitted ? [1, 1.15, 1] : 1 }
+                  }
+                  transition={{
+                    duration: isSubmitting ? 0.8 : 0.5,
+                    repeat: isSubmitting ? Number.POSITIVE_INFINITY : 0,
+                  }}
+                  className="rounded-2xl border border-blue-500/20 bg-gradient-to-br from-blue-500/15 to-purple-500/15 p-3"
+                >
+                  {isSubmitted ? (
+                    <CheckCircle className="h-6 w-6 text-emerald-400" />
+                  ) : (
+                    <Send className="h-6 w-6 text-blue-300" />
+                  )}
+                </motion.div>
+              </div>
+
+              <div className="grid gap-6 sm:grid-cols-2">
                 <div>
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium text-slate-300 mb-2"
+                    className="mb-2 block text-sm font-medium text-slate-300"
                   >
                     Name
                   </label>
@@ -163,14 +310,14 @@ export default function Contact() {
                     value={formData.name}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-300 backdrop-blur-sm"
-                    placeholder="Your name"
+                    className="w-full rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-400 backdrop-blur-sm transition-all duration-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                    placeholder="Your Name"
                   />
                 </div>
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-slate-300 mb-2"
+                    className="mb-2 block text-sm font-medium text-slate-300"
                   >
                     Email
                   </label>
@@ -181,7 +328,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-300 backdrop-blur-sm"
+                    className="w-full rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-400 backdrop-blur-sm transition-all duration-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                     placeholder="your@email.com"
                   />
                 </div>
@@ -190,7 +337,7 @@ export default function Contact() {
               <div>
                 <label
                   htmlFor="subject"
-                  className="block text-sm font-medium text-slate-300 mb-2"
+                  className="mb-2 block text-sm font-medium text-slate-300"
                 >
                   Subject
                 </label>
@@ -201,15 +348,15 @@ export default function Contact() {
                   value={formData.subject}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-300 backdrop-blur-sm"
-                  placeholder="Project inquiry"
+                  className="w-full rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-400 backdrop-blur-sm transition-all duration-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                  placeholder="Project Inquiry"
                 />
               </div>
 
               <div>
                 <label
                   htmlFor="message"
-                  className="block text-sm font-medium text-slate-300 mb-2"
+                  className="mb-2 block text-sm font-medium text-slate-300"
                 >
                   Message
                 </label>
@@ -220,23 +367,48 @@ export default function Contact() {
                   onChange={handleChange}
                   required
                   rows={6}
-                  className="w-full px-4 py-3 bg-slate-800/50 border border-slate-700 rounded-lg text-white placeholder-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all duration-300 backdrop-blur-sm resize-none"
+                  className="w-full resize-none rounded-lg border border-slate-700 bg-slate-800/50 px-4 py-3 text-white placeholder-slate-400 backdrop-blur-sm transition-all duration-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                   placeholder="Tell me about your project..."
                 />
               </div>
 
               <motion.button
                 type="submit"
-                disabled={isSubmitting || isSubmitted}
-                className="w-full px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold hover:shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                disabled={isSubmitting || isSubmitted || !isFormValid}
+                className="relative flex w-full items-center justify-center gap-2 overflow-hidden rounded-lg bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 font-semibold text-white transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/25 disabled:cursor-not-allowed disabled:opacity-50"
                 data-interactive
-                whileHover={{ scale: isSubmitting || isSubmitted ? 1 : 1.02 }}
-                whileTap={{ scale: isSubmitting || isSubmitted ? 1 : 0.98 }}
+                whileHover={{
+                  scale:
+                    isSubmitting || isSubmitted || !isFormValid ? 1 : 1.02,
+                }}
+                whileTap={{
+                  scale:
+                    isSubmitting || isSubmitted || !isFormValid ? 1 : 0.98,
+                }}
               >
+                <motion.span
+                  className="absolute inset-0 bg-[linear-gradient(120deg,transparent,rgba(255,255,255,0.28),transparent)]"
+                  animate={
+                    isSubmitting
+                      ? { x: ["-120%", "120%"] }
+                      : isSubmitted
+                        ? { scale: [0.9, 1.08, 1], opacity: [0.15, 0.28, 0] }
+                        : { x: "-140%" }
+                  }
+                  transition={
+                    isSubmitting
+                      ? {
+                          duration: 1.1,
+                          repeat: Number.POSITIVE_INFINITY,
+                          ease: "linear",
+                        }
+                      : { duration: 0.6 }
+                  }
+                />
                 {isSubmitting ? (
                   <>
                     <motion.div
-                      className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                      className="h-5 w-5 rounded-full border-2 border-white/30 border-t-white"
                       animate={{ rotate: 360 }}
                       transition={{
                         duration: 1,
@@ -248,31 +420,29 @@ export default function Contact() {
                   </>
                 ) : isSubmitted ? (
                   <>
-                    <CheckCircle className="w-5 h-5" />
+                    <CheckCircle className="h-5 w-5" />
                     Message Sent!
                   </>
                 ) : (
                   <>
-                    <Send className="w-5 h-5" />
+                    <Send className="h-5 w-5" />
                     Send Message
                   </>
                 )}
               </motion.button>
+
+              {submitError ? (
+                <p className="text-sm text-rose-300">{submitError}</p>
+              ) : null}
+
+              {isSubmitted ? (
+                <p className="text-sm text-emerald-300">
+                  Message sent successfully.
+                </p>
+              ) : null}
             </form>
           </motion.div>
         </div>
-
-        {/* Footer */}
-        <motion.div
-          className="mt-20 pt-8 border-t border-slate-800 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          <p className="text-slate-400">
-            © 2024 Mohammad Zaid. Crafted with passion and precision.
-          </p>
-        </motion.div>
       </div>
     </section>
   );

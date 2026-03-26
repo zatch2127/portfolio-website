@@ -3,7 +3,60 @@
 import { motion, useInView } from "framer-motion"
 import { BadgeCheck, Bot, Braces } from "lucide-react"
 import type { CSSProperties } from "react"
-import { useRef } from "react"
+import { useRef, useState } from "react"
+
+const technicalStrengthGroups = [
+  {
+    title: "Core Programming Skills",
+    items: [
+      { name: "Python", summary: "Backend development, API design, data handling" },
+      { name: "JavaScript", summary: "Frontend logic, async workflows, API integration" },
+    ],
+  },
+  {
+    title: "Frameworks & Frontend",
+    items: [
+      { name: "React / Next.js", summary: "Component-based UI, state management, routing" },
+      { name: "Tailwind CSS", summary: "Responsive UI development and styling" },
+    ],
+  },
+  {
+    title: "Databases",
+    items: [
+      { name: "MySQL", summary: "Relational database design, queries, optimization basics" },
+      { name: "MongoDB", summary: "CRUD operations and basic schema design" },
+    ],
+  },
+  {
+    title: "DevOps & Tools",
+    items: [
+      { name: "Git / GitHub", summary: "Version control and collaboration" },
+      { name: "Docker", summary: "Containerized deployment" },
+      { name: "CI/CD Pipelines", summary: "Basic setup for Node.js / Python apps" },
+    ],
+  },
+  {
+    title: "AI / LLM Exposure",
+    items: [
+      { name: "OpenAI / Gemini", summary: "Built AI-powered mock interview platform using OpenAI / Gemini" },
+      { name: "Hugging Face", summary: "Familiar with Hugging Face workflows for NLP" },
+    ],
+  },
+] as const
+
+const coreTechnologies = [
+  "Python",
+  "React",
+  "Next.js",
+  "JavaScript",
+  "Node.js",
+  "Express",
+  "MySQL",
+  "MongoDB",
+  "Tailwind CSS",
+  "HTML",
+  "CSS",
+] as const
 
 const expertiseGroups = [
   {
@@ -87,19 +140,16 @@ const expertiseGroups = [
 export default function Skills() {
   const ref = useRef<HTMLElement | null>(null)
   const isInView = useInView(ref, { once: true, margin: "-120px" })
+  const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({})
 
   return (
     <section
       id="skills"
       ref={ref}
-      className="verified-expertise relative overflow-hidden py-24 sm:py-32"
+      className="verified-expertise relative overflow-hidden bg-slate-900/30 py-24 sm:py-32"
     >
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_26%),radial-gradient(circle_at_85%_10%,rgba(34,211,238,0.12),transparent_24%),linear-gradient(180deg,#05070c_0%,#070b11_46%,#04060a_100%)]" />
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
-      <div className="absolute left-1/2 top-24 h-64 w-64 -translate-x-1/2 rounded-full bg-cyan-300/10 blur-[140px]" />
-
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
+        {/* <motion.div
           className="mx-auto max-w-3xl text-center"
           initial={{ opacity: 0, y: 24 }}
           animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
@@ -107,20 +157,59 @@ export default function Skills() {
         >
           <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-[11px] uppercase tracking-[0.32em] text-slate-300">
             <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_16px_rgba(103,232,249,0.85)]" />
-            Verified Expertise
+            Technical Expertise
           </span>
           <h2 className="mt-6 font-[family-name:var(--font-playfair)] text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
-            Technical skill cards with embedded certification proof.
+            A practical skill set presented for hiring managers and recruiters.
           </h2>
           <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-300/72 sm:text-lg">
-            A restrained portfolio surface that keeps the layout minimal while exposing issuer and completion details
-            only when needed.
+            Core languages, frameworks, databases, and certifications organized in a resume-friendly format that
+            makes your strengths easy to evaluate during screening.
           </p>
-        </motion.div>
+        </motion.div> */}
+
+        <div className="mt-16">
+          <motion.div
+            className="rounded-[28px] border border-white/10 bg-white/[0.035] p-6 shadow-[0_24px_80px_rgba(2,8,23,0.45)] backdrop-blur-xl"
+            initial={{ opacity: 0, y: 30 }}
+            animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+            transition={{ duration: 0.75, ease: [0.22, 1, 0.36, 1] }}
+          >
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500">Professional Snapshot</p>
+                <h3 className="mt-3 text-3xl font-semibold tracking-tight text-white">Technical Strengths</h3>
+              </div>
+            </div>
+
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300/74">
+              Focused on Python-led development with practical experience in backend services, frontend delivery,
+              real-time applications, and database-driven web products.
+            </p>
+
+            <div className="mt-8 grid gap-4 lg:grid-cols-2">
+              {technicalStrengthGroups.map((group) => (
+                <div key={group.title} className="rounded-[20px] border border-white/8 bg-slate-950/45 px-4 py-4">
+                  <p className="text-[11px] uppercase tracking-[0.28em] text-slate-500">{group.title}</p>
+                  <div className="mt-4 space-y-3">
+                    {group.items.map((skill) => (
+                      <div key={skill.name}>
+                        <p className="text-sm font-medium text-white">{skill.name}</p>
+                        <p className="mt-1 text-sm leading-6 text-slate-300/80">{skill.summary}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </motion.div>
+        </div>
 
         <div className="mt-16 grid gap-6 lg:grid-cols-2">
           {expertiseGroups.map((group, index) => {
             const Icon = group.icon
+            const isExpanded = expandedGroups[group.title] ?? false
+            const visibleCertificates = isExpanded ? group.certifications : group.certifications.slice(0, 2)
 
             return (
               <motion.article
@@ -158,7 +247,7 @@ export default function Skills() {
                 </div>
 
                 <div className="mt-8 space-y-3">
-                  {group.certifications.map((certificate) => (
+                  {visibleCertificates.map((certificate) => (
                     <div
                       key={certificate.name}
                       className="relative rounded-[20px] border border-white/8 bg-slate-950/45 px-4 py-4 transition-transform duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-[-1px]"
@@ -188,11 +277,51 @@ export default function Skills() {
                       </div>
                     </div>
                   ))}
+
+                  {group.certifications.length > 2 ? (
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setExpandedGroups((current) => ({
+                          ...current,
+                          [group.title]: !isExpanded,
+                        }))
+                      }
+                      className="inline-flex items-center rounded-full border border-white/10 bg-white/[0.05] px-4 py-2 text-[11px] uppercase tracking-[0.24em] text-slate-200 transition-colors duration-300 hover:border-white/20 hover:bg-white/[0.1]"
+                    >
+                      {isExpanded ? "Show Less" : `Show More +${group.certifications.length - 2}`}
+                    </button>
+                  ) : null}
                 </div>
               </motion.article>
             )
           })}
         </div>
+
+        {/* <motion.div
+          className="mt-16 rounded-[28px] border border-white/10 bg-white/[0.035] p-6 shadow-[0_24px_80px_rgba(2,8,23,0.45)] backdrop-blur-xl"
+          initial={{ opacity: 0, y: 30 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          transition={{ duration: 0.75, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500">Core Technologies</p>
+          <h3 className="mt-3 text-3xl font-semibold tracking-tight text-white">What I work with</h3>
+          <p className="mt-4 text-sm leading-7 text-slate-300/74">
+            A concise stack overview that helps employers quickly identify your strongest tools and development
+            comfort zone.
+          </p>
+
+          <div className="mt-8 flex flex-wrap gap-3">
+            {coreTechnologies.map((technology) => (
+              <span
+                key={technology}
+                className="rounded-full border border-slate-700 bg-slate-800/70 px-4 py-2 text-sm text-slate-200"
+              >
+                {technology}
+              </span>
+            ))}
+          </div>
+        </motion.div> */}
       </div>
     </section>
   )

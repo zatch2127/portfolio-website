@@ -33,23 +33,19 @@ export default function About() {
             </h2>
             <div className="space-y-6 text-slate-300 text-lg leading-relaxed">
               <p>
-                I'm an aspiring full-stack developer with a strong foundation in
-                web technologies and a deep passion for building digital
-                experiences that are both functional and visually engaging. My
-                journey into development began with personal projects and a
-                curiosity for how technology shapes the world.
+               I'm a full-stack developer with a strong foundation in web technologies, passionate about building digital experiences that are both functional and visually engaging. My journey began with personal projects and a curiosity for how technology shapes the world, leading me to create real-world applications across frontend, backend, and AI-powered tools.
+
               </p>
-              <p>
+              {/* <p>
                 I'm particularly interested in modern JavaScript frameworks,
                 cloud platforms, and creating user-focused solutions. While I
                 may be at the start of my professional journey, I've already
                 built several projects, collaborated on open-source, and am
                 eager to contribute to impactful development teams.
-              </p>
+              </p> */}
               <p>
-                Outside of coding, I enjoy learning about AI, contributing to
-                online tech communities, and constantly seeking ways to improve
-                my skills and help others grow alongside me.
+               Outside of coding, I enjoy exploring AI and LLMs, contributing to online tech communities, and continuously improving my skills to deliver practical, production-ready solutions.
+
               </p>
             </div>
 
@@ -60,10 +56,10 @@ export default function About() {
               transition={{ duration: 0.8, delay: 0.6 }}
             >
               {[
-                "Passionate Learner",
-                "Aspiring Full Stack Developer",
-                "Quick Adopter of New Tech",
-                "Open to Opportunities",
+                'Passionate Learner: Continuously exploring new technologies',
+'Full-Stack Developer: Skilled in Python, React, and modern web stacks',
+'Quick Adopter of Emerging Tech: Applies new tools effectively in projects',
+'Open to Opportunities: Ready to contribute and grow in impactful tech roles',
               ].map((item, index) => (
                 <span
                   key={item}
