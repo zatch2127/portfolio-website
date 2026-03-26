@@ -5,6 +5,13 @@
 :root {
   --font-inter: "Inter", sans-serif;
   --font-playfair: "Playfair Display", serif;
+  --expertise-accent-ai: #7dd3fc;
+  --expertise-accent-cloud: #67e8f9;
+  --expertise-accent-dev: #38bdf8;
+  --expertise-surface: rgba(255, 255, 255, 0.04);
+  --expertise-surface-strong: rgba(255, 255, 255, 0.08);
+  --expertise-border: rgba(255, 255, 255, 0.1);
+  --expertise-transition: 560ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 * {
@@ -111,4 +118,55 @@ body {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+}
+
+.verified-expertise .expertise-card {
+  transition:
+    transform var(--expertise-transition),
+    border-color var(--expertise-transition),
+    background-color var(--expertise-transition),
+    box-shadow var(--expertise-transition);
+}
+
+.verified-expertise .expertise-card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 255, 255, 0.16);
+  background: var(--expertise-surface-strong);
+  box-shadow: 0 30px 90px rgba(2, 8, 23, 0.56);
+}
+
+.verified-expertise .expertise-icon {
+  filter: grayscale(1);
+  transition:
+    color var(--expertise-transition),
+    border-color var(--expertise-transition),
+    filter var(--expertise-transition),
+    box-shadow var(--expertise-transition);
+}
+
+.verified-expertise .expertise-card:hover .expertise-icon {
+  color: var(--expertise-brand);
+  border-color: color-mix(in srgb, var(--expertise-brand) 30%, transparent);
+  filter: grayscale(0);
+  box-shadow: 0 0 32px color-mix(in srgb, var(--expertise-brand) 18%, transparent);
+}
+
+.verified-expertise .verified-badge {
+  transition:
+    transform var(--expertise-transition),
+    background-color var(--expertise-transition),
+    border-color var(--expertise-transition),
+    box-shadow var(--expertise-transition);
+}
+
+.verified-expertise .verified-badge:hover,
+.verified-expertise .verified-badge:focus-visible {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 28px rgba(14, 165, 233, 0.18);
+}
+
+@media (max-width: 640px) {
+  .verified-expertise .expertise-card:hover {
+    transform: none;
+  }
 }

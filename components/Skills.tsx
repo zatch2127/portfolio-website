@@ -1,102 +1,198 @@
 "use client"
 
 import { motion, useInView } from "framer-motion"
+import { BadgeCheck, Bot, Braces } from "lucide-react"
+import type { CSSProperties } from "react"
 import { useRef } from "react"
 
-export default function Skills() {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true, margin: "-100px" })
+const expertiseGroups = [
+  {
+    title: "LLM",
+    description: "Generative AI, LLM foundations, Claude-oriented workflows, and cloud-aligned certifications grouped into one focused capability area.",
+    icon: Bot,
+    accent: "var(--expertise-accent-ai)",
+    certifications: [
+      {
+        name: "Oracle Cloud Infrastructure 2025 Certified Generative AI Professional",
+        issuer: "Oracle",
+        date: "2025",
+        url: "https://drive.google.com/file/d/1efdO9rVNcn8iCnz81SaC0qh2ivY7iwx9/view?usp=drive_link",
+      },
+      {
+        name: "Oracle Certified Foundations Associate / Oracle Cloud Infrastructure 2025 AI Foundations Associate",
+        issuer: "Oracle",
+        date: "2025",
+        url: "https://drive.google.com/file/d/1ATD-KXD0uAgYbP64ZRMs6NtbHbjqpAEy/view?usp=drive_link",
+      },
+      {
+        name: "Hugging Face (AI / ML Course Certificate)",
+        issuer: "Hugging Face",
+        date: "2024",
+        url: "https://drive.google.com/file/d/1ph8X7jVc6LNaplSRDEr5qj4vMSb7JvbN/view?usp=drive_link",
+      },
+      {
+        name: "Cloud Code in Action",
+        issuer: "Anthropic",
+        date: "2025",
+        url: "https://drive.google.com/file/d/1ujwfc-EcGFCgosjvFVb00rraKZi0Y5zt/view?usp=drive_link",
+      },
+      {
+        name: "Cloud 101",
+        issuer: "Cloud Academy",
+        date: "2024",
+        url: "https://drive.google.com/file/d/1zhdDSSgVy3exKfaB5Z8g2lEkjsXe1IHk/view?usp=drive_link",
+      },
+    ],
+  },
+  {
+    title: "Development",
+    description: "Full-stack development training grounded in Python and JavaScript fundamentals with practical delivery focus.",
+    icon: Braces,
+    accent: "var(--expertise-accent-dev)",
+    certifications: [
+      {
+        name: "Python Full Stack Certification",
+        issuer: "G-Tech Jain  ",
+        date: "2024",
+        url: "https://drive.google.com/file/d/19M22fZOQP9ko4tPJQCqRBiHTiFUp6MuO/view?usp=drive_link",
+      },
+      {
+        name: "Web Development Using Python",
+        issuer: "ABMA Education & G-TEC Education",
+        date: "2024",
+        url: "https://drive.google.com/file/d/1WIREjZwj1F1Pcfit9yvzKxE9TGsSuSKh/view?usp=drive_link",
+      },
+      {
+        name: "Python Basics",
+        issuer: "HackerRank",
+        date: "2024",
+        url: "https://drive.google.com/file/d/1cqGXTK8WXrK4K8995QgOvSxXJ53DEGR-/view?usp=drive_link",
+      },
+      {
+        name: "Python Essentials 1",
+        issuer: "Cisco Networking Academy",
+        date: "2024",
+        url: "https://drive.google.com/file/d/1lRAGaiO1Ws11adwgSWWscRdgKEZgycOY/view?usp=drive_link",
+      },
+      {
+        name: "Python for Data Science & Machine Learning",
+        issuer: "Udemy",
+        date: "2024",
+        url: "https://drive.google.com/file/d/1BNGp_KdiqyTJ5jC_RZ0Nu9aekJ2OhWUe/view?usp=drive_link",
+      },
+    ],
+  },
+] as const
 
-  const skills = [
-    { name: "Python", level: 95, color: "from-yellow-500 to-orange-500" },
-    { name: "JavaScript", level: 80, color: "from-blue-600 to-blue-400" },
-    { name: "MySQL", level: 88, color: "from-green-500 to-emerald-500" },
-    { name: "React/Next.js", level: 75, color: "from-blue-500 to-cyan-500" },
-    { name: "TailwindCss", level: 82, color: "from-orange-500 to-red-500" },
-    // { name: "GraphQL", level: 80, color: "from-pink-500 to-purple-500" },
-    // { name: "Docker", level: 78, color: "from-blue-400 to-blue-600" },
-    { name: "MongoDB", level: 45, color: "from-green-600 to-green-400" },
-  ]
+export default function Skills() {
+  const ref = useRef<HTMLElement | null>(null)
+  const isInView = useInView(ref, { once: true, margin: "-120px" })
 
   return (
-    <section id="skills" className="py-20 bg-slate-950" ref={ref}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      id="skills"
+      ref={ref}
+      className="verified-expertise relative overflow-hidden py-24 sm:py-32"
+    >
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_26%),radial-gradient(circle_at_85%_10%,rgba(34,211,238,0.12),transparent_24%),linear-gradient(180deg,#05070c_0%,#070b11_46%,#04060a_100%)]" />
+      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
+      <div className="absolute left-1/2 top-24 h-64 w-64 -translate-x-1/2 rounded-full bg-cyan-300/10 blur-[140px]" />
+
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
+          className="mx-auto max-w-3xl text-center"
+          initial={{ opacity: 0, y: 24 }}
+          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-            Technical Expertise
+          <span className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[0.04] px-4 py-1.5 text-[11px] uppercase tracking-[0.32em] text-slate-300">
+            <span className="h-2 w-2 rounded-full bg-cyan-300 shadow-[0_0_16px_rgba(103,232,249,0.85)]" />
+            Verified Expertise
+          </span>
+          <h2 className="mt-6 font-[family-name:var(--font-playfair)] text-4xl leading-tight text-white sm:text-5xl lg:text-6xl">
+            Technical skill cards with embedded certification proof.
           </h2>
-          <p className="text-xl text-slate-400 max-w-3xl mx-auto">
-            A comprehensive toolkit built through years of hands-on experience and continuous learning
+          <p className="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-300/72 sm:text-lg">
+            A restrained portfolio surface that keeps the layout minimal while exposing issuer and completion details
+            only when needed.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-8">
-          {skills.map((skill, index) => (
-            <motion.div
-              key={skill.name}
-              className="group"
-              initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-              animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
-              transition={{ duration: 0.8, delay: index * 0.1 }}
-            >
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-lg font-semibold text-white">{skill.name}</h3>
-                <span className="text-slate-400">{skill.level}%</span>
-              </div>
+        <div className="mt-16 grid gap-6 lg:grid-cols-2">
+          {expertiseGroups.map((group, index) => {
+            const Icon = group.icon
 
-              <div className="relative h-3 bg-slate-800 rounded-full overflow-hidden">
-                <motion.div
-                  className={`absolute top-0 left-0 h-full bg-gradient-to-r ${skill.color} rounded-full`}
-                  initial={{ width: 0 }}
-                  animate={isInView ? { width: `${skill.level}%` } : { width: 0 }}
-                  transition={{ duration: 1.5, delay: index * 0.1 + 0.5, ease: "easeOut" }}
+            return (
+              <motion.article
+                key={group.title}
+                className="expertise-card group relative overflow-visible rounded-[28px] border border-white/10 bg-white/[0.035] p-6 shadow-[0_24px_80px_rgba(2,8,23,0.45)] backdrop-blur-xl"
+                initial={{ opacity: 0, y: 40 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 40 }}
+                transition={{ duration: 0.75, delay: index * 0.12, ease: [0.22, 1, 0.36, 1] }}
+              >
+                <div
+                  className="absolute inset-x-0 top-0 h-px opacity-80"
+                  style={{ background: `linear-gradient(90deg, transparent, ${group.accent}, transparent)` }}
                 />
 
-                {/* Animated shine effect */}
-                <motion.div
-                  className="absolute top-0 left-0 h-full w-8 bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-12"
-                  animate={{
-                    x: [-50, 300],
-                  }}
-                  transition={{
-                    duration: 2,
-                    delay: index * 0.1 + 1,
-                    ease: "easeInOut",
-                  }}
-                />
-              </div>
-            </motion.div>
-          ))}
+                <div className="flex items-start justify-between gap-4">
+                  <div
+                    className="expertise-icon flex h-14 w-14 items-center justify-center rounded-2xl border border-white/10 bg-slate-950/80 text-slate-400"
+                    style={{ "--expertise-brand": group.accent } as CSSProperties}
+                  >
+                    <Icon className="h-6 w-6" />
+                  </div>
+
+                  <div className="flex flex-col items-end gap-2">
+                    <span className="rounded-full border border-white/10 bg-white/[0.05] px-3 py-1 text-[10px] uppercase tracking-[0.28em] text-slate-400">
+                      Certified
+                    </span>
+                    <span className="text-sm font-medium text-white/90">{group.certifications.length} Records</span>
+                  </div>
+                </div>
+
+                <div className="mt-8">
+                  <p className="text-[11px] uppercase tracking-[0.32em] text-slate-500">Capability Area</p>
+                  <h3 className="mt-3 text-3xl font-semibold tracking-tight text-white">{group.title}</h3>
+                  <p className="mt-4 text-sm leading-7 text-slate-300/74">{group.description}</p>
+                </div>
+
+                <div className="mt-8 space-y-3">
+                  {group.certifications.map((certificate) => (
+                    <div
+                      key={certificate.name}
+                      className="relative rounded-[20px] border border-white/8 bg-slate-950/45 px-4 py-4 transition-transform duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] group-hover:translate-y-[-1px]"
+                    >
+                      <div className="flex items-start justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="text-sm font-medium text-white">{certificate.name}</p>
+                          <p className="mt-1 text-sm text-slate-400">{certificate.issuer}</p>
+                        </div>
+
+                        <a
+                          href={certificate.url}
+                          target="_blank"
+                          rel="noreferrer"
+                          aria-label={`Open ${certificate.name} certificate`}
+                          className="verified-badge peer relative inline-flex shrink-0 items-center gap-2 rounded-full border border-white/10 bg-white/[0.06] px-3 py-1.5 text-[11px] uppercase tracking-[0.24em] text-slate-200 outline-none transition-all duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] hover:border-white/20 hover:bg-white/[0.11] focus-visible:border-cyan-300/40 focus-visible:bg-white/[0.12]"
+                        >
+                          <BadgeCheck className="h-3.5 w-3.5 text-cyan-300" />
+                          Verified
+                        </a>
+                      </div>
+
+                      <div className="pointer-events-none absolute right-4 z-20 mt-3 w-[220px] translate-y-2 rounded-2xl border border-white/15 bg-white/[0.1] p-4 opacity-0 shadow-[0_18px_50px_rgba(2,8,23,0.48)] backdrop-blur-2xl transition-all duration-500 [transition-timing-function:cubic-bezier(0.22,1,0.36,1)] peer-hover:pointer-events-auto peer-hover:translate-y-0 peer-hover:opacity-100 peer-focus-visible:pointer-events-auto peer-focus-visible:translate-y-0 peer-focus-visible:opacity-100 max-sm:left-4 max-sm:right-4 max-sm:w-auto">
+                        <p className="text-[10px] uppercase tracking-[0.28em] text-slate-400">Verification</p>
+                        <p className="mt-3 text-sm text-white">{certificate.issuer}</p>
+                        <p className="mt-1 text-sm text-slate-300">Issued {certificate.date}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </motion.article>
+            )
+          })}
         </div>
-
-        {/* Technology icons grid */}
-        <motion.div
-          className="mt-20 grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-8"
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          {["React", "MySQL", "JavaScript", "Node.js", "Python",].map((tech, index) => (
-            <motion.div
-              key={tech}
-              className="flex flex-col items-center p-4 bg-slate-900/50 rounded-xl border border-slate-800 hover:border-blue-500/50 transition-all duration-300 backdrop-blur-sm group"
-              whileHover={{ scale: 1.05, y: -5 }}
-              data-interactive
-            >
-              <div className="w-12 h-12 bg-gradient-to-br from-blue-500/20 to-purple-600/20 rounded-lg mb-3 flex items-center justify-center group-hover:from-blue-500/30 group-hover:to-purple-600/30 transition-all duration-300">
-                <span className="text-2xl">⚡</span>
-              </div>
-              <span className="text-sm text-slate-300 group-hover:text-white transition-colors duration-300">
-                {tech}
-              </span>
-            </motion.div>
-          ))}
-        </motion.div>
       </div>
     </section>
   )
