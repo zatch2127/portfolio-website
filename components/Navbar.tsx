@@ -71,7 +71,7 @@ export default function Navbar() {
             className="text-lg font-bold text-white tracking-tight focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6366f1] focus-visible:ring-offset-2 focus-visible:ring-offset-[#050505] rounded-lg px-1 -ml-1"
             aria-label="Go to top"
           >
-            Zaid<span className="text-[#6366f1]">.</span>
+            Mohammad Zaid<span className="text-[#6366f1]">.</span>
           </a>
 
           {/* Desktop nav */}
