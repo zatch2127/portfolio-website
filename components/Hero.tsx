@@ -1,8 +1,51 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef, useEffect, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
+import { useRef, useState, useEffect, useCallback } from "react";
+import { ArrowDown, Command } from "lucide-react";
+import ParticleField from "./ParticleField";
+
+const roles = [
+  { text: "Full-Stack Developer", icon: "{ }" },
+  { text: "AI Agent Builder", icon: "⚡" },
+  { text: "SaaS Architect", icon: "△" },
+  { text: "Automation Engineer", icon: "⟁" },
+];
+
+function TypewriterText({ text }: { text: string }) {
+  const [displayed, setDisplayed] = useState("");
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    setDisplayed("");
+    setStarted(false);
+    const startTimer = setTimeout(() => setStarted(true), 100);
+    return () => clearTimeout(startTimer);
+  }, [text]);
+
+  useEffect(() => {
+    if (!started) return;
+    if (displayed.length < text.length) {
+      const timer = setTimeout(() => {
+        setDisplayed(text.slice(0, displayed.length + 1));
+      }, 35 + Math.random() * 25);
+      return () => clearTimeout(timer);
+    }
+  }, [displayed, text, started]);
+
+  return (
+    <span>
+      {displayed}
+      {displayed.length < text.length && (
+        <motion.span
+          className="inline-block w-[2px] h-[1em] bg-[#6366f1] ml-[1px] align-middle"
+          animate={{ opacity: [1, 0] }}
+          transition={{ duration: 0.5, repeat: Infinity }}
+        />
+      )}
+    </span>
+  );
+}
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
@@ -11,21 +54,17 @@ export default function Hero() {
     offset: ["start start", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
-  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.6], [1, 0]);
+  const scale = useTransform(scrollYProgress, [0, 0.6], [1, 0.95]);
 
-  const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const [roleIndex, setRoleIndex] = useState(0);
 
   useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth) * 100,
-        y: (e.clientY / window.innerHeight) * 100,
-      });
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => window.removeEventListener("mousemove", handleMouseMove);
+    const interval = setInterval(() => {
+      setRoleIndex((prev) => (prev + 1) % roles.length);
+    }, 3200);
+    return () => clearInterval(interval);
   }, []);
 
   return (
@@ -33,129 +72,213 @@ export default function Hero() {
       id="home"
       ref={ref}
       className="relative h-screen flex items-center justify-center overflow-hidden"
+      aria-label="Hero section"
     >
-      {/* Animated background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-950 via-blue-950/20 to-purple-950/20" />
+      {/* Background layers */}
+      <div className="absolute inset-0 bg-[#050505]" aria-hidden="true" />
 
-      {/* Floating elements */}
-      {[...Array(20)].map((_, i) => (
-        <motion.div
-          key={i}
-          className="absolute w-2 h-2 bg-blue-400/30 rounded-full"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-          }}
-          animate={{
-            x: [0, Math.random() * 100 - 50],
-            y: [0, Math.random() * 100 - 50],
-            scale: [1, 1.5, 1],
-            opacity: [0.3, 0.8, 0.3],
-          }}
-          transition={{
-            duration: 3 + Math.random() * 2,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          }}
-        />
-      ))}
+      {/* Radial glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] md:w-[900px] md:h-[900px] bg-[rgba(99,102,241,0.04)] rounded-full blur-[100px]" aria-hidden="true" />
 
-      {/* Parallax background shapes */}
-      <motion.div
-        className="absolute inset-0"
+      {/* Secondary glow — subtle warm */}
+      <div className="absolute top-[30%] right-[20%] w-[400px] h-[400px] bg-[rgba(236,72,153,0.02)] rounded-full blur-[80px]" aria-hidden="true" />
+
+      {/* Grid lines */}
+      <div
+        className="absolute inset-0 opacity-[0.02]"
+        aria-hidden="true"
         style={{
-          x: useTransform(scrollYProgress, [0, 1], [0, -100]),
-          y: useTransform(scrollYProgress, [0, 1], [0, -50]),
+          backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+          backgroundSize: "80px 80px",
         }}
-      >
-        <div
-          className="absolute top-1/4 left-1/4 w-64 h-64 bg-gradient-to-r from-blue-500/10 to-purple-600/10 rounded-full blur-3xl"
-          style={{
-            transform: `translate(${mousePosition.x * 0.1}px, ${
-              mousePosition.y * 0.1
-            }px)`,
-          }}
-        />
-        <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-gradient-to-r from-cyan-500/10 to-blue-600/10 rounded-full blur-3xl"
-          style={{
-            transform: `translate(${-mousePosition.x * 0.05}px, ${
-              -mousePosition.y * 0.05
-            }px)`,
-          }}
-        />
-      </motion.div>
+      />
 
+      {/* Particles */}
+      <div aria-hidden="true">
+        <ParticleField />
+      </div>
+
+      {/* Content */}
       <motion.div
-        className="relative z-10 text-center max-w-4xl mx-auto px-4"
-        style={{ y, opacity }}
+        className="relative z-10 text-center max-w-5xl mx-auto px-5"
+        style={{ y, opacity, scale }}
       >
-        <motion.h1
-          className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-300 bg-clip-text text-transparent"
-          initial={{ opacity: 0, y: 50 }}
+        {/* Status badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.2 }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mb-8"
         >
-          Mohammad Zaid
-        </motion.h1>
+          <span className="inline-flex items-center gap-2.5 px-4 py-2 text-[11px] font-medium tracking-[0.15em] uppercase text-[#6366f1] border border-[rgba(99,102,241,0.15)] rounded-full bg-[rgba(99,102,241,0.05)]">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[#6366f1] opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#6366f1]" />
+            </span>
+            Available for opportunities
+          </span>
+        </motion.div>
 
+        {/* Name — staggered letter reveal */}
+        <div className="mb-4 overflow-hidden">
+          <motion.h1
+            className="heading-xl leading-[0.95]"
+            initial="hidden"
+            animate="visible"
+          >
+            {"Mohammad".split("").map((char, i) => (
+              <motion.span
+                key={`m-${i}`}
+                className="inline-block"
+                variants={{
+                  hidden: { y: 120, rotateX: -80, opacity: 0 },
+                  visible: {
+                    y: 0,
+                    rotateX: 0,
+                    opacity: 1,
+                    transition: {
+                      duration: 0.8,
+                      delay: 0.4 + i * 0.04,
+                      ease: [0.22, 1, 0.36, 1],
+                    },
+                  },
+                }}
+              >
+                {char}
+              </motion.span>
+            ))}
+          </motion.h1>
+        </div>
+
+        <div className="mb-8 overflow-hidden">
+          <motion.h1
+            className="heading-xl text-[#444] leading-[0.95]"
+            initial="hidden"
+            animate="visible"
+          >
+            {"Zaid".split("").map((char, i) => (
+              <motion.span
+                key={`z-${i}`}
+                className="inline-block"
+                variants={{
+                  hidden: { y: 120, rotateX: -80, opacity: 0 },
+                  visible: {
+                    y: 0,
+                    rotateX: 0,
+                    opacity: 1,
+                    transition: {
+                      duration: 0.8,
+                      delay: 0.6 + i * 0.05,
+                      ease: [0.22, 1, 0.36, 1],
+                    },
+                  },
+                }}
+              >
+                {char}
+              </motion.span>
+            ))}
+          </motion.h1>
+        </div>
+
+        {/* Rotating role with typewriter + gradient + icon */}
+        <motion.div
+          className="h-12 mb-10 flex items-center justify-center overflow-hidden"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 1.0 }}
+        >
+          <span className="text-caption mr-3">I build as a</span>
+          <div className="relative h-8 flex items-center">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={roleIndex}
+                className="flex items-center gap-2"
+                initial={{ y: 30, opacity: 0, filter: "blur(4px)" }}
+                animate={{ y: 0, opacity: 1, filter: "blur(0px)" }}
+                exit={{ y: -30, opacity: 0, filter: "blur(4px)" }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              >
+                {/* Icon */}
+                <span className="text-[13px] text-[#6366f1] font-mono opacity-70">
+                  {roles[roleIndex].icon}
+                </span>
+                {/* Typewriter text with shimmer gradient */}
+                <span className="text-lg sm:text-xl font-semibold text-gradient-shimmer whitespace-nowrap">
+                  <TypewriterText text={roles[roleIndex].text} />
+                </span>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        </motion.div>
+
+        {/* Description */}
         <motion.p
-          className="text-xl md:text-2xl text-slate-300 mb-8 font-light"
-          initial={{ opacity: 0, y: 30 }}
+          className="text-body max-w-2xl mx-auto mb-12"
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.4 }}
+          transition={{ duration: 0.8, delay: 1.2 }}
         >
-    Full Stack Developer | Python, React, AI / LLM Projects
-          {/* Full Stack Developer & Creative Technologist */}
-
+          I design and build intelligent systems that solve real problems.
+          From AI-powered SaaS platforms to production APIs that handle
+          thousands of requests — I care about the details that make
+          software feel inevitable.
         </motion.p>
 
-        <motion.p
-          className="text-lg text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.6 }}
-        >
-          {/* Crafting exceptional digital experiences with cutting-edge
-          technologies. Passionate about creating innovative solutions that push
-          the boundaries of web development. */}
-          I create full-stack applications and AI-powered tools, from responsive web apps to real-time systems. Skilled in Python, React, and modern web technologies, with a passion for building practical, production-ready solutions.
-        </motion.p>
-
+        {/* CTAs */}
         <motion.div
           className="flex flex-col sm:flex-row gap-4 justify-center items-center"
-          initial={{ opacity: 0, y: 30 }}
+          initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1, delay: 0.8 }}
+          transition={{ duration: 0.8, delay: 1.4 }}
         >
           <motion.a
-            href="#projects"
-            className="px-8 py-4 bg-gradient-to-r from-blue-600 to-purple-600 rounded-full text-white font-semibold hover:shadow-2xl hover:shadow-blue-500/25 transition-all duration-300"
-            data-interactive
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
+            href="#nutriscan"
+            className="btn-primary px-8 py-4 text-base"
+            whileHover={{ scale: 1.03, y: -1 }}
+            whileTap={{ scale: 0.97 }}
           >
-            View My Work
+            See My Work
           </motion.a>
-
           <motion.a
-            href="#contact"
-            className="px-8 py-4 border-2 border-slate-600 rounded-full text-slate-300 hover:border-blue-400 hover:text-white transition-all duration-300 backdrop-blur-sm"
-            data-interactive
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
+            href="#about"
+            className="btn-ghost px-8 py-4 text-base"
+            whileHover={{ scale: 1.03, y: -1 }}
+            whileTap={{ scale: 0.97 }}
           >
-            Get In Touch
+            My Story
           </motion.a>
+        </motion.div>
+
+        {/* Keyboard hint */}
+        <motion.div
+          className="mt-16 flex items-center justify-center gap-2 text-[#333]"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 2.2 }}
+        >
+          <Command className="w-3 h-3" />
+          <span className="text-[11px] tracking-wider">Press</span>
+          <span className="kbd">K</span>
+          <span className="text-[11px] tracking-wider">to explore</span>
         </motion.div>
       </motion.div>
 
+      {/* Scroll indicator */}
       <motion.div
-        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Number.POSITIVE_INFINITY }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-3"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2.8 }}
+        aria-hidden="true"
       >
-        <ChevronDown className="w-8 h-8 text-slate-400" />
+        <span className="text-[10px] uppercase tracking-[0.3em] text-[#333]">
+          Scroll
+        </span>
+        <motion.div
+          className="w-px h-8 bg-gradient-to-b from-[#333] to-transparent"
+          animate={{ scaleY: [1, 0.5, 1] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        />
       </motion.div>
     </section>
   );

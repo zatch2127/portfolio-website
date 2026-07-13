@@ -1,228 +1,177 @@
 "use client";
 
 import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
-
+import { Lightbulb, Code2, Zap, Target } from "lucide-react";
+import ScrollReveal, { StaggerReveal } from "./ScrollReveal";
 import zatch from "./images/zatch.png";
 
-export default function About() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [isModalOpen, setIsModalOpen] = useState(false);
+const philosophy = [
+  {
+    icon: Lightbulb,
+    title: "Think in systems",
+    desc: "Every feature is part of a larger architecture. I map the whole before writing a line.",
+  },
+  {
+    icon: Code2,
+    title: "Ship with clarity",
+    desc: "Code that other engineers can read is code that lasts. I write for humans first.",
+  },
+  {
+    icon: Zap,
+    title: "Constraint-driven",
+    desc: "The best solutions come from working within limits. Free tiers, tight deadlines — they force better engineering.",
+  },
+  {
+    icon: Target,
+    title: "Impact over effort",
+    desc: "A 50ms response time matters more than a clever algorithm. I optimize for what users feel.",
+  },
+];
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+export default function About() {
+  const timelineRef = useRef(null);
+  const timelineInView = useInView(timelineRef, { once: true, margin: "-100px" });
 
   return (
-    <section id="about" className="py-20 bg-slate-900/50" ref={ref}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <motion.div
-          className="grid lg:grid-cols-2 gap-12 items-center"
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : { opacity: 0 }}
-          transition={{ duration: 0.8 }}
-        >
-          <motion.div
-            initial={{ x: -50, opacity: 0 }}
-            animate={isInView ? { x: 0, opacity: 1 } : { x: -50, opacity: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-          >
-            <h2 className="text-4xl md:text-5xl font-bold mb-6 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
-              About Me
-            </h2>
-            <div className="space-y-6 text-slate-300 text-lg leading-relaxed">
-              <p>
-               I'm a full-stack developer with a strong foundation in web technologies, passionate about building digital experiences that are both functional and visually engaging. My journey began with personal projects and a curiosity for how technology shapes the world, leading me to create real-world applications across frontend, backend, and AI-powered tools.
+    <section id="about" className="section-padding relative" aria-labelledby="about-heading">
+      <div className="section-divider mb-24 sm:mb-32 lg:mb-40" />
 
-              </p>
-              {/* <p>
-                I'm particularly interested in modern JavaScript frameworks,
-                cloud platforms, and creating user-focused solutions. While I
-                may be at the start of my professional journey, I've already
-                built several projects, collaborated on open-source, and am
-                eager to contribute to impactful development teams.
-              </p> */}
-              <p>
-               Outside of coding, I enjoy exploring AI and LLMs, contributing to online tech communities, and continuously improving my skills to deliver practical, production-ready solutions.
+      <div className="container-width">
+        {/* Header */}
+        <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 mb-24 sm:mb-32">
+          <div>
+            <ScrollReveal>
+              <span className="text-caption mb-4 block">About</span>
+            </ScrollReveal>
+            <ScrollReveal delay={0.1}>
+              <h2 id="about-heading" className="heading-lg">
+                The person behind
+                <br />
+                <span className="text-gradient">the code.</span>
+              </h2>
+            </ScrollReveal>
+          </div>
 
-              </p>
+          <div className="flex flex-col justify-end">
+            <ScrollReveal delay={0.2}>
+              <div className="space-y-5 text-body">
+                <p>
+                  I didn&apos;t start with a computer science degree. I started
+                  with curiosity — taking things apart, seeing how they worked,
+                  and wondering if I could build something better.
+                </p>
+                <p>
+                  That curiosity led me to Python, then to full-stack
+                  development, then to AI. Each step wasn&apos;t a career
+                  move — it was a problem I couldn&apos;t stop thinking about.
+                </p>
+                <p>
+                  Today, I build systems that need to work in production. Not
+                  demos. Not prototypes. Software that handles real users, real
+                  data, and real constraints.
+                </p>
+              </div>
+            </ScrollReveal>
+          </div>
+        </div>
+
+        {/* Photo + Philosophy */}
+        <div className="grid lg:grid-cols-5 gap-12 lg:gap-16 items-start mb-24 sm:mb-32">
+          {/* Photo */}
+          <ScrollReveal className="lg:col-span-2" direction="left">
+            <div className="relative max-w-sm">
+              <div className="relative aspect-square rounded-2xl overflow-hidden border border-[rgba(255,255,255,0.06)]">
+                <Image
+                  src={zatch}
+                  alt="Mohammad Zaid"
+                  fill
+                  className="object-cover"
+                  priority
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#050505]/50 to-transparent" />
+              </div>
+              {/* Accent line */}
+              <div className="absolute -bottom-3 -right-3 w-24 h-24 border-r-2 border-b-2 border-[rgba(99,102,241,0.2)] rounded-br-2xl" />
             </div>
+          </ScrollReveal>
 
-            <motion.div
-              className="mt-8 flex flex-wrap gap-4"
-              initial={{ y: 20, opacity: 0 }}
-              animate={isInView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-              transition={{ duration: 0.8, delay: 0.6 }}
+          {/* Philosophy */}
+          <div className="lg:col-span-3">
+            <ScrollReveal>
+              <span className="text-caption mb-6 block">Engineering Philosophy</span>
+            </ScrollReveal>
+            <StaggerReveal
+              className="grid sm:grid-cols-2 gap-4"
+              itemClassName=""
+              staggerDelay={0.08}
+              initialDelay={0.1}
+            >
+              {philosophy.map((item) => (
+                  <motion.div
+                    key={item.title}
+                    className="card p-5 group cursor-default"
+                    whileHover={{ y: -2, borderColor: "rgba(99,102,241,0.15)" }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="w-9 h-9 rounded-lg bg-[rgba(99,102,241,0.08)] flex items-center justify-center mb-4 group-hover:bg-[rgba(99,102,241,0.12)] transition-colors">
+                      <item.icon className="w-4 h-4 text-[#6366f1]" />
+                    </div>
+                    <h3 className="text-sm font-semibold text-white mb-1.5">
+                      {item.title}
+                    </h3>
+                    <p className="text-[13px] text-[#666] leading-relaxed">
+                      {item.desc}
+                    </p>
+                  </motion.div>
+              ))}
+            </StaggerReveal>
+          </div>
+        </div>
+
+        {/* Timeline */}
+        <div ref={timelineRef}>
+          <ScrollReveal>
+            <span className="text-caption mb-8 block">Journey</span>
+          </ScrollReveal>
+
+          <div className="relative">
+            {/* Vertical line */}
+            <div className="absolute left-[19px] top-0 bottom-0 w-px bg-[rgba(255,255,255,0.06)]" />
+
+            <StaggerReveal
+              className="space-y-8"
+              itemClassName=""
+              staggerDelay={0.1}
+              initialDelay={0.1}
             >
               {[
-                'Passionate Learner: Continuously exploring new technologies',
-'Full-Stack Developer: Skilled in Python, React, and modern web stacks',
-'Quick Adopter of Emerging Tech: Applies new tools effectively in projects',
-'Open to Opportunities: Ready to contribute and grow in impactful tech roles',
-              ].map((item, index) => (
-                <span
-                  key={item}
-                  className="px-4 py-2 bg-slate-800/50 border border-slate-700 rounded-full text-sm text-slate-300 backdrop-blur-sm"
-                >
-                  {item}
-                </span>
+                { year: "2024", event: "Started building with Python and web technologies", detail: "First projects: chess games, e-commerce platforms, real-time apps" },
+                { year: "2024", event: "Earned 10 certifications across AI and development", detail: "Oracle, Anthropic, Hugging Face, Cisco, HackerRank" },
+                { year: "2025", event: "Built NutriScan — a production SaaS with AI", detail: "Flask API, 50+ endpoints, multi-source search, LLM integration, deployed on cloud" },
+                { year: "2025", event: "Deepened AI/LLM expertise", detail: "Groq, Gemini, ChromaDB, LangGraph agent workflows" },
+              ].map((item) => (
+                  <div key={item.year + item.event} className="flex gap-6 items-start">
+                    <div className="relative z-10 w-10 h-10 rounded-full bg-[#0c0c0c] border border-[rgba(255,255,255,0.08)] flex items-center justify-center shrink-0">
+                      <span className="text-[10px] font-bold text-[#6366f1]">
+                        {item.year.slice(2)}
+                      </span>
+                    </div>
+                    <div className="pb-2">
+                      <p className="text-sm font-medium text-white mb-0.5">
+                        {item.event}
+                      </p>
+                      <p className="text-[13px] text-[#555]">
+                        {item.detail}
+                      </p>
+                    </div>
+                  </div>
               ))}
-            </motion.div>
-          </motion.div>
-
-          <motion.div
-            className="relative"
-            initial={{ x: 50, opacity: 0 }}
-            animate={isInView ? { x: 0, opacity: 1 } : { x: 50, opacity: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            <div
-              className="relative w-full h-96 rounded-2xl overflow-hidden cursor-pointer hover:scale-105 transition-transform duration-300"
-              onClick={openModal}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-purple-600/20 backdrop-blur-sm" />
-
-              <Image
-                src={zatch}
-                alt="Mohammad Zaid"
-                width={400}
-                height={400}
-                className="object-cover"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent" />
-
-              {/* Click indicator */}
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 hover:opacity-100 transition-opacity duration-300">
-                <div className="bg-black/50 text-white px-4 py-2 rounded-lg text-sm backdrop-blur-sm">
-                  Click to expand
-                </div>
-              </div>
-            </div>
-
-            {/* Floating decoration */}
-            <motion.div
-              className="absolute -top-4 -right-4 w-24 h-24 bg-gradient-to-r from-blue-500/30 to-purple-600/30 rounded-full blur-xl"
-              animate={{
-                scale: [1, 1.2, 1],
-                rotate: [0, 180, 360],
-              }}
-              transition={{
-                duration: 8,
-                repeat: Number.POSITIVE_INFINITY,
-                ease: "linear",
-              }}
-            />
-          </motion.div>
-        </motion.div>
+            </StaggerReveal>
+          </div>
+        </div>
       </div>
-
-      {/* Modal */}
-      {isModalOpen && (
-        <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/90 backdrop-blur-md"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.4 }}
-          onClick={closeModal}
-        >
-          <motion.div
-            className="relative w-[90vw] h-[90vh] mx-4"
-            initial={{
-              scale: 0.3,
-              opacity: 0,
-              rotateY: -90,
-              z: -1000,
-            }}
-            animate={{
-              scale: 1,
-              opacity: 1,
-              rotateY: 0,
-              z: 0,
-            }}
-            exit={{
-              scale: 0.3,
-              opacity: 0,
-              rotateY: 90,
-              z: -1000,
-            }}
-            transition={{
-              duration: 0.6,
-              type: "spring",
-              stiffness: 300,
-              damping: 25,
-            }}
-            onClick={(e) => e.stopPropagation()}
-            style={{ perspective: 1000 }}
-          >
-            {/* Close button */}
-            <motion.button
-              onClick={closeModal}
-              className="absolute -top-6 -right-6 z-10 w-12 h-12 bg-gradient-to-r from-red-500/80 to-pink-600/80 hover:from-red-600 hover:to-pink-700 rounded-full flex items-center justify-center text-white backdrop-blur-sm transition-all duration-300 shadow-lg hover:shadow-red-500/25"
-              initial={{ scale: 0, rotate: -180 }}
-              animate={{ scale: 1, rotate: 0 }}
-              whileHover={{ scale: 1.1, rotate: 90 }}
-              whileTap={{ scale: 0.95 }}
-              transition={{ delay: 0.3 }}
-            >
-              <svg
-                width="20"
-                height="20"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="18" y1="6" x2="6" y2="18"></line>
-                <line x1="6" y1="6" x2="18" y2="18"></line>
-              </svg>
-            </motion.button>
-
-            {/* Modal image */}
-            <motion.div
-              className="relative w-full h-[500px] rounded-2xl overflow-hidden shadow-2xl bg-black"
-              initial={{ y: 50, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              transition={{ delay: 0.2, duration: 0.4 }}
-            >
-              {/* IMAGE - Full face, clear, no blur */}
-              <Image
-                src={zatch}
-                alt="Mohammad Zaid - Full size"
-                fill
-                className="object-contain z-10"
-              />
-
-              {/* Subtle hover zoom effect */}
-              <motion.div
-                className="absolute inset-0 z-20 rounded-2xl"
-                whileHover={{ scale: 1.02 }}
-                transition={{ type: "spring", stiffness: 200, damping: 15 }}
-              />
-
-              {/* Animated glowing border */}
-              <motion.div
-                className="absolute inset-0 rounded-2xl border-2 border-transparent z-30"
-                animate={{
-                  boxShadow: [
-                    "0 0 0px rgba(0, 123, 255, 0.3)",
-                    "0 0 15px rgba(0, 123, 255, 0.5)",
-                    "0 0 0px rgba(0, 123, 255, 0.3)",
-                  ],
-                }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
-            </motion.div>
-          </motion.div>
-        </motion.div>
-      )}
     </section>
   );
 }

@@ -1,241 +1,280 @@
 "use client";
 
-import { motion, useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import Image from "next/image";
-import { ExternalLink, Github } from "lucide-react";
-import logoImage from "./images/logo.png";
-import syntaraImage from "./images/syntara.png";
-import chessLogoImage from "./images/chess_logo.png";
+import { motion, AnimatePresence } from "framer-motion";
+import { useState } from "react";
+import {
+  ExternalLink,
+  ChevronDown,
+  Wrench,
+  Lightbulb,
+  Target,
+  MessageSquare,
+} from "lucide-react";
+import ScrollReveal from "./ScrollReveal";
+import MagneticButton from "./MagneticButton";
+import TiltCard from "./TiltCard";
 
 const projects = [
   {
-    title: "Dawn of the Werewolf",
-    description:
-      "A real-time multiplayer Werewolf game where players are assigned secret roles like villagers, werewolves, and leaders. The game alternates between day and night phases during the day, players discuss and vote, while at night, werewolves secretly coordinate through private chat.",
-    tech: ["React", "Node.js", "Socket.io", "Express", "MongoDB"],
-    github: "",
-    live: "https://nightmarewolf.netlify.app/",
-    featured: true,
-    image: logoImage,
-  },
-  {
+    number: "01",
     title: "AI Mock Interview",
+    tagline: "Voice-powered interview practice with AI feedback",
     description:
-      "An AI-powered mock interview platform with voice conversations, Google login, session persistence, and real-time feedback scoring. It uses the Web Speech API for natural interaction, Gemini for intelligent interview responses, and Firebase for authentication and interview history.",
-    tech: [
-      "React 18",
-      "Vite",
-      "Web Speech API",
-      "Google Gemini",
-      "Firebase Auth",
-      "Firestore",
-    ],
-    github: "",
+      "An AI-powered mock interview platform with voice conversations, Google login, session persistence, and real-time feedback scoring. Uses the Web Speech API for natural interaction and Gemini for intelligent interview responses.",
+    problem:
+      "Most mock interview tools feel robotic. You type, it responds. There's no voice, no flow, no pressure — the things that make real interviews hard.",
+    challenge:
+      "Building natural voice interaction in the browser while maintaining session state and providing meaningful feedback. The Web Speech API has inconsistent support across browsers.",
+    approach:
+      "Used the Web Speech API for real-time voice recognition, Gemini for generating contextually relevant interview questions and feedback, and Firebase for session persistence and authentication.",
+    tech: ["React 18", "Vite", "Web Speech API", "Google Gemini", "Firebase Auth", "Firestore"],
     live: "https://ai-interview-ten-woad.vercel.app/",
-    featured: true,
-    image:
-      "https://storage.googleapis.com/gweb-uniblog-publish-prod/images/Gemini_Blog_Header_3.width-200.format-webp.webp",
+    takeaways: [
+      "Voice APIs are fragile — built fallbacks for browser compatibility",
+      "Session persistence across tabs requires careful state synchronization",
+      "AI feedback quality depends heavily on prompt engineering",
+    ],
   },
   {
-    title: "E-Commerce Platform",
+    number: "02",
+    title: "Dawn of the Werewolf",
+    tagline: "Real-time multiplayer social deduction game",
     description:
-      "A responsive full-stack e-commerce platform built with React and MongoDB. It features smooth animations using GSAP, modern styling with Tailwind CSS, and dynamic real-time inventory management.",
-    tech: ["React", "MongoDB", "Tailwind CSS", "JavaScript", "GSAP"],
-    github: "",
-    live: "https://www.syntarahealthcare.com",
-    featured: true,
-    image: syntaraImage,
+      "A real-time multiplayer Werewolf game where players are assigned secret roles like villagers, werewolves, and leaders. The game alternates between day and night phases — players discuss and vote during the day, while werewolves secretly coordinate at night through private chat.",
+    problem:
+      "Social deduction games rely on real-time communication, hidden information, and game state synchronization — all things that are hard to get right over the web.",
+    challenge:
+      "Keeping game state consistent across all connected players while maintaining the secrecy of role assignments. Night phase requires separate communication channels that certain players can't access.",
+    approach:
+      "Used Socket.IO for real-time bidirectional communication. Server maintains authoritative game state. Client receives only the information their role is allowed to see.",
+    tech: ["React", "Node.js", "Socket.io", "Express", "MongoDB"],
+    live: "https://nightmarewolf.netlify.app/",
+    takeaways: [
+      "Real-time multiplayer is 80% backend logic, 20% frontend",
+      "Game state synchronization is a distributed systems problem",
+      "Event-driven architecture scales better than polling",
+    ],
   },
   {
+    number: "03",
+    title: "Syntara Healthcare",
+    tagline: "E-commerce platform with real-time inventory",
+    description:
+      "A responsive e-commerce platform built with React and MongoDB. Features smooth animations using GSAP, modern styling with Tailwind CSS, and dynamic real-time inventory management.",
+    problem:
+      "Healthcare products need accurate inventory tracking. A customer ordering an out-of-stock item creates trust issues and operational overhead.",
+    challenge:
+      "Real-time inventory updates across multiple sessions without over-fetching or showing stale data. Animations needed to feel premium without impacting performance.",
+    approach:
+      "GSAP for smooth scroll-triggered animations. MongoDB for flexible product data. Component-based React architecture for maintainability.",
+    tech: ["React", "MongoDB", "Tailwind CSS", "JavaScript", "GSAP"],
+    live: "https://www.syntarahealthcare.com",
+    takeaways: [
+      "GSAP animations perform better than CSS transitions for complex sequences",
+      "E-commerce UX is about reducing friction at every step",
+      "Real-time inventory requires careful conflict resolution",
+    ],
+  },
+  {
+    number: "04",
     title: "Zatch Chess",
+    tagline: "Lightweight real-time chess over the web",
     description:
       "A real-time online chess game built with Express and Socket.IO, using chess.js to enforce legal moves and game state. The frontend is rendered with plain HTML, CSS, and vanilla JavaScript for a lightweight multiplayer experience.",
-    tech: [
-      "Node.js",
-      "Express",
-      "Socket.IO",
-      "chess.js",
-      "HTML",
-      "CSS",
-      "JavaScript",
-      "npm",
-    ],
-    github: "",
+    problem:
+      "Chess platforms are either heavy (requiring frameworks) or limited (single-player only). I wanted something lightweight that still supported real-time multiplayer.",
+    challenge:
+      "Move validation, game state management, and opponent synchronization need to happen atomically. A race condition means corrupted game state.",
+    approach:
+      "chess.js handles all move validation server-side. Socket.IO broadcasts moves to both players. Vanilla frontend keeps the bundle tiny and the experience fast.",
+    tech: ["Node.js", "Express", "Socket.IO", "chess.js", "HTML", "CSS", "JavaScript"],
     live: "https://zatch-chess.onrender.com/",
-    featured: true,
-    image: chessLogoImage,
+    takeaways: [
+      "Vanilla JS has its place — the entire frontend is under 50KB",
+      "Server-side validation prevents cheating in multiplayer games",
+      "chess.js is an excellent library for move validation and game state",
+    ],
   },
 ];
 
 export default function Projects() {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, margin: "-100px" });
-  const [hoveredProject, setHoveredProject] = useState<number | null>(null);
+  const [expandedProject, setExpandedProject] = useState<number | null>(null);
 
   return (
-    <section id="projects" className="py-20 bg-slate-900/30" ref={ref}>
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <motion.div
-          className="mb-16 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8 }}
-        >
-          <h2 className="mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-4xl font-bold text-transparent md:text-5xl">
-            Featured Projects
-          </h2>
-          <p className="mx-auto max-w-3xl text-xl text-slate-400">
-            A showcase of innovative solutions that demonstrate technical
-            excellence and creative problem-solving
-          </p>
-        </motion.div>
+    <section id="projects" className="section-padding" aria-labelledby="projects-heading">
+      <div className="section-divider mb-24 sm:mb-32 lg:mb-40" />
 
-        <div className="grid gap-8 lg:grid-cols-2">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.title}
-              className={`group relative overflow-hidden rounded-2xl border border-slate-700 bg-slate-800/50 backdrop-blur-sm transition-all duration-500 hover:border-blue-500/50 ${
-                project.featured ? "lg:col-span-2" : ""
-              }`}
-              initial={{ opacity: 0, y: 50 }}
-              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-              transition={{ duration: 0.8, delay: index * 0.2 }}
-              onMouseEnter={() => setHoveredProject(index)}
-              onMouseLeave={() => setHoveredProject(null)}
-              whileHover={{ y: -5 }}
-            >
-              <div
-                className={`grid gap-0 ${
-                  project.featured ? "lg:grid-cols-2" : "grid-cols-1"
-                }`}
-              >
-                <div className="relative overflow-hidden">
-                  <div className="relative min-h-[280px] overflow-hidden bg-slate-950 sm:min-h-[320px]">
-                    <Image
-                      src={project.image || "/placeholder.svg"}
-                      alt=""
-                      fill
-                      aria-hidden="true"
-                      sizes="(min-width: 1024px) 50vw, 100vw"
-                      className="scale-110 object-cover object-center opacity-30 blur-2xl transition-transform duration-500 group-hover:scale-125"
-                    />
-                    <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.22),_transparent_45%),linear-gradient(135deg,rgba(15,23,42,0.25),rgba(2,6,23,0.92))]" />
-                    <div className="absolute inset-0 p-6 sm:p-8">
-                      <div className="relative h-full overflow-hidden rounded-2xl border border-white/10 bg-white/5 shadow-[0_24px_80px_rgba(15,23,42,0.45)] backdrop-blur-sm">
-                        <Image
-                          src={project.image || "/placeholder.svg"}
-                          alt={project.title}
-                          fill
-                          sizes="(min-width: 1024px) 42vw, 100vw"
-                          className="object-contain p-4 transition-transform duration-500 group-hover:scale-105 sm:p-6"
-                        />
+      <div className="container-width">
+        <ScrollReveal>
+          <span className="text-caption mb-4 block">Projects</span>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.1}>
+          <h2 id="projects-heading" className="heading-lg mb-4">
+            Things I&apos;ve
+            <br />
+            <span className="text-gradient">built and shipped.</span>
+          </h2>
+        </ScrollReveal>
+
+        <ScrollReveal delay={0.2}>
+          <p className="text-body max-w-2xl mb-16">
+            Real projects with live demos. Each one solved a different problem.
+            Click any project to explore the thinking behind it.
+          </p>
+        </ScrollReveal>
+
+        <div className="space-y-4">
+          {projects.map((project, i) => (
+            <ScrollReveal key={project.number} delay={0.1 + i * 0.05}>
+              <TiltCard>
+                <motion.div
+                  className="card overflow-hidden"
+                  layout
+                >
+                {/* Header - always visible */}
+                <div
+                  className="p-5 sm:p-6 cursor-pointer group"
+                  onClick={() =>
+                    setExpandedProject(expandedProject === i ? null : i)
+                  }
+                >
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex items-start gap-4 flex-1 min-w-0">
+                      <span className="text-xs font-bold text-[#6366f1] mt-1 shrink-0">
+                        {project.number}
+                      </span>
+                      <div className="min-w-0">
+                        <h3 className="text-base sm:text-lg font-semibold text-white group-hover:text-[#6366f1] transition-colors">
+                          {project.title}
+                        </h3>
+                        <p className="text-[13px] text-[#555] mt-0.5">
+                          {project.tagline}
+                        </p>
                       </div>
                     </div>
+                    <div className="flex items-center gap-3 shrink-0">
+                      <MagneticButton
+                        href={project.live}
+                        className="btn-ghost btn-sm hidden sm:flex"
+                      >
+                        <ExternalLink className="w-3.5 h-3.5" />
+                        Live
+                      </MagneticButton>
+                      <motion.div
+                        animate={{ rotate: expandedProject === i ? 180 : 0 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <ChevronDown className="w-4 h-4 text-[#444]" />
+                      </motion.div>
+                    </div>
                   </div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
-                  <motion.div
-                    className="absolute right-4 top-4 flex gap-2"
-                    initial={{ opacity: 0, scale: 0.8 }}
-                    animate={
-                      hoveredProject === index
-                        ? { opacity: 1, scale: 1 }
-                        : { opacity: 0, scale: 0.8 }
-                    }
-                    transition={{ duration: 0.3 }}
-                  >
-                    {project.github ? (
-                      <a
-                        href={project.github}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="rounded-full bg-slate-900/80 p-2 text-white backdrop-blur-sm transition-colors duration-200 hover:bg-blue-600"
-                        data-interactive
-                      >
-                        <Github className="h-4 w-4" />
-                      </a>
-                    ) : null}
-                    <button
-                      type="button"
-                      onClick={() => window.open(project.live, "_blank")}
-                      className="inline-flex items-center justify-center gap-2 rounded-full bg-slate-900/80 px-4 py-2 text-white backdrop-blur-sm transition-colors duration-200 hover:bg-purple-600"
-                      data-interactive
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                    </button>
-                  </motion.div>
-                </div>
-
-                <div className="flex flex-col justify-center p-6">
-                  <h3 className="mb-3 text-2xl font-bold text-white transition-colors duration-300 group-hover:text-blue-400">
-                    {project.title}
-                  </h3>
-                  <p className="mb-4 leading-relaxed text-slate-300">
-                    {project.description}
-                  </p>
-
-                  <div className="mb-4 flex flex-wrap gap-2">
-                    {project.tech.map((tech) => (
-                      <span
-                        key={tech}
-                        className="rounded-full border border-slate-600 bg-slate-700/50 px-3 py-1 text-sm text-slate-300"
-                      >
-                        {tech}
-                      </span>
+                  {/* Tech tags */}
+                  <div className="flex flex-wrap gap-2 mt-3 ml-7">
+                    {project.tech.slice(0, 4).map((t) => (
+                      <span key={t} className="tag text-[9px]">{t}</span>
                     ))}
-                  </div>
-
-                  <div className="relative z-10 flex gap-4">
-                    {project.github ? (
-                      <button
-                        type="button"
-                        onClick={() => window.open(project.github, "_blank")}
-                        className="relative z-20 flex cursor-pointer items-center gap-2 border-none bg-transparent p-0 text-slate-400 transition-colors duration-200 hover:text-white"
-                        style={{ pointerEvents: "auto" }}
-                      >
-                        <Github className="h-4 w-4" />
-                        Code
-                      </button>
-                    ) : null}
-
-                    <button
-                      type="button"
-                      onClick={() => window.open(project.live, "_blank")}
-                      className="relative z-20 flex cursor-pointer items-center gap-2 border-none bg-transparent p-0 text-slate-400 transition-colors duration-200 hover:text-blue-400"
-                      style={{ pointerEvents: "auto" }}
-                    >
-                      <ExternalLink className="h-4 w-4" />
-                      Live Demo
-                    </button>
+                    {project.tech.length > 4 && (
+                      <span className="tag text-[9px]">
+                        +{project.tech.length - 4}
+                      </span>
+                    )}
                   </div>
                 </div>
-              </div>
 
-              <div className="absolute inset-0 rounded-2xl opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-                <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/20 to-purple-600/20 blur-xl" />
-              </div>
-            </motion.div>
+                {/* Expanded content */}
+                <AnimatePresence>
+                  {expandedProject === i && (
+                    <motion.div
+                      initial={{ height: 0, opacity: 0 }}
+                      animate={{ height: "auto", opacity: 1 }}
+                      exit={{ height: 0, opacity: 0 }}
+                      transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+                      className="overflow-hidden"
+                    >
+                      <div className="px-5 sm:px-6 pb-6 border-t border-[rgba(255,255,255,0.04)]">
+                        <div className="grid sm:grid-cols-2 gap-5 mt-5">
+                          {/* Problem */}
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-2">
+                              <Target className="w-3.5 h-3.5 text-[#6366f1]" />
+                              <span className="text-[11px] uppercase tracking-[0.15em] text-[#555] font-medium">
+                                Problem
+                              </span>
+                            </div>
+                            <p className="text-[13px] text-[#888] leading-relaxed">
+                              {project.problem}
+                            </p>
+                          </div>
+
+                          {/* Challenge */}
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-2">
+                              <Wrench className="w-3.5 h-3.5 text-[#6366f1]" />
+                              <span className="text-[11px] uppercase tracking-[0.15em] text-[#555] font-medium">
+                                Challenge
+                              </span>
+                            </div>
+                            <p className="text-[13px] text-[#888] leading-relaxed">
+                              {project.challenge}
+                            </p>
+                          </div>
+
+                          {/* Approach */}
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-2">
+                              <Lightbulb className="w-3.5 h-3.5 text-[#6366f1]" />
+                              <span className="text-[11px] uppercase tracking-[0.15em] text-[#555] font-medium">
+                                Approach
+                              </span>
+                            </div>
+                            <p className="text-[13px] text-[#888] leading-relaxed">
+                              {project.approach}
+                            </p>
+                          </div>
+
+                          {/* Takeaways */}
+                          <div className="space-y-3">
+                            <div className="flex items-center gap-2">
+                              <MessageSquare className="w-3.5 h-3.5 text-[#6366f1]" />
+                              <span className="text-[11px] uppercase tracking-[0.15em] text-[#555] font-medium">
+                                Takeaways
+                              </span>
+                            </div>
+                            <ul className="space-y-2">
+                              {project.takeaways.map((t, ti) => (
+                                <li
+                                  key={ti}
+                                  className="text-[13px] text-[#888] leading-relaxed flex items-start gap-2"
+                                >
+                                  <span className="w-1 h-1 rounded-full bg-[#6366f1] mt-2 shrink-0" />
+                                  {t}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* Mobile live link */}
+                        <div className="mt-5 sm:hidden">
+                          <MagneticButton
+                            href={project.live}
+                            className="btn-ghost btn-sm w-full"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
+                            Live Demo
+                          </MagneticButton>
+                        </div>
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </motion.div>
+              </TiltCard>
+            </ScrollReveal>
           ))}
         </div>
-
-        <motion.div
-          className="mt-12 text-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.8, delay: 0.8 }}
-        >
-          <motion.a
-            href="#contact"
-            className="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-blue-600 to-purple-600 px-8 py-4 font-semibold text-white transition-all duration-300 hover:shadow-2xl hover:shadow-blue-500/25"
-            data-interactive
-            whileHover={{ scale: 1.05, y: -2 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            View All Projects
-            <ExternalLink className="h-4 w-4" />
-          </motion.a>
-        </motion.div>
       </div>
     </section>
   );

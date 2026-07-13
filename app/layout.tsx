@@ -1,32 +1,29 @@
 import type React from "react";
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
-import MouseFollower from "@/components/MouseFollower";
-import ScrollProgress from "@/components/ScrollProgress";
 import Footer from "@/components/footer/Footer";
+import EasterEgg from "@/components/EasterEgg";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({
-  subsets: ["latin"],
-  variable: "--font-playfair",
-});
 
 export const metadata: Metadata = {
-  title: "Mohammad Zaid – Aspiring Software & Web Developer",
+  title: "Mohammad Zaid | AI Software Developer",
   description:
-    "Aspiring software and web developer with hands-on experience in Python, Django, Tailwind CSS, and Bootstrap. Also familiar with core programming languages like C, C++, and Java. Explore my portfolio and projects.",
+    "AI Software Developer building intelligent systems, scalable SaaS platforms, and production-ready applications. Specializing in Python, React, LLMs, and full-stack development.",
   keywords:
-    "python developer, django, web development, tailwind css, bootstrap, software developer, fresher portfolio, c, c++, java, backend developer",
+    "AI developer, software engineer, full-stack developer, Python, React, Next.js, LLM, machine learning, SaaS, automation, Flask, FastAPI",
   authors: [{ name: "Mohammad Zaid" }],
+  icons: {
+    icon: "/favicon.svg",
+  },
   openGraph: {
-    title: "Mohammad Zaid – Aspiring Software & Web Developer",
+    title: "Mohammad Zaid | AI Software Developer",
     description:
-      "Fresher developer skilled in Python, Django, Tailwind CSS, and Bootstrap. Check out my portfolio of beginner-friendly projects and learn more about my journey.",
+      "Building intelligent systems, scalable SaaS platforms, and production-ready applications.",
     type: "website",
   },
-  generator: "v0.dev",
 };
 
 export default function RootLayout({
@@ -36,13 +33,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="scroll-smooth">
-      <body
-        className={`${inter.variable} ${playfair.variable} font-sans bg-slate-950 text-white overflow-x-hidden`}
-      >
-        <ScrollProgress />
-        <MouseFollower />
+      <body className={`${inter.variable} font-sans bg-[#050505] text-white`}>
+        <a href="#main-content" className="skip-link">
+          Skip to content
+        </a>
+        <EasterEgg />
         <Navbar />
-        {children}
+        <main id="main-content" tabIndex={-1}>
+          {children}
+        </main>
         <Footer />
       </body>
     </html>
